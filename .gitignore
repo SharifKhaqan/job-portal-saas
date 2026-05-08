@@ -2,12 +2,25 @@
 backend/node_modules/
 frontend/node_modules/
 node_modules/
+.pnp
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/versions
 
 # Build artifacts
 frontend/.next/
 frontend/out/
 frontend/dist/
 frontend/build/
+coverage/
+*.tsbuildinfo
+next-env.d.ts
+
+# User uploads
+backend/uploads/
 
 # Environment files
 backend/.env
@@ -27,3 +40,4 @@ pnpm-debug.log*
 # Misc
 .DS_Store
 .vercel/
+*.pem

@@ -44,6 +44,10 @@ exports.login = async (req, res) => {
       return res.status(400).json({ message: "Invalid credentials" });
     }
 
+    if (user.isBlocked) {
+      return res.status(403).json({ message: "Your account is blocked" });
+    }
+
     // Compare password
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
@@ -57,13 +61,24 @@ exports.login = async (req, res) => {
       { expiresIn: "7d" }
     );
 
+    const userPayload = {
+      id: user._id,
+      name: user.name,
+      email: user.email,
+      role: user.role
+    };
+
+    if (user.role === "candidate") {
+      userPayload.bio = user.bio;
+      userPayload.skills = user.skills;
+      userPayload.resume = user.resume;
+      userPayload.phone = user.phone;
+      userPayload.address = user.address;
+    }
+
     res.json({
       token,
-      user: {
-        id: user._id,
-        name: user.name,
-        role: user.role
-      }
+      user: userPayload
     });
 
   } catch (error) {

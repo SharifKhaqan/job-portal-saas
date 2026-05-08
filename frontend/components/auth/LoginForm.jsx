@@ -1,8 +1,9 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import { useCallback, useState } from "react";
-import Toast from "../components/Toast";
-import { loginUser } from "../services/authService";
+import Toast from "../Toast";
+import { loginUser } from "../../services/auth/authService";
 
 function EyeIcon({ className }) {
   return (
@@ -44,7 +45,8 @@ function EyeOffIcon({ className }) {
   );
 }
 
-export default function Login() {
+export default function LoginForm() {
+  const router = useRouter();
   const [form, setForm] = useState({
     email: "",
     password: ""
@@ -58,13 +60,28 @@ export default function Login() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setSubmitting(true);
+
     try {
       const res = await loginUser(form);
-      localStorage.setItem("token", res.data.token);
+      const { token, user } = res.data;
+      const routesByRole = {
+        admin: "/admin",
+        employer: "/employer",
+        candidate: "/candidate"
+      };
+      const redirectPath = routesByRole[user?.role];
+
+      if (!token || !user || !redirectPath) {
+        throw new Error("Unexpected login response");
+      }
+
+      localStorage.setItem("token", token);
+      localStorage.setItem("user", JSON.stringify(user));
       setToast({
         type: "success",
         message: "Signed in successfully. Welcome back!"
       });
+      router.push(redirectPath);
     } catch (err) {
       const data = err.response?.data;
       const msg =
@@ -110,14 +127,14 @@ export default function Login() {
               className="w-full rounded-lg border border-slate-700 bg-slate-900/60 py-2 pl-3 pr-11 text-sm text-slate-100 outline-none placeholder:text-slate-500 focus:border-sky-500 focus:ring-1 focus:ring-sky-500"
               type={showPassword ? "text" : "password"}
               autoComplete="current-password"
-              placeholder="••••••••"
+              placeholder="........"
               value={form.password}
               onChange={(e) => setForm({ ...form, password: e.target.value })}
             />
             <button
               type="button"
               aria-label={showPassword ? "Hide password" : "Show password"}
-              className="absolute inset-y-0 right-0 flex items-center justify-center rounded-r-lg bg-slate-900/40 px-3 text-slate-100 hover:text-white cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-500/80"
+              className="absolute inset-y-0 right-0 flex cursor-pointer items-center justify-center rounded-r-lg bg-slate-900/40 px-3 text-slate-100 hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-500/80"
               onClick={() => setShowPassword((v) => !v)}
             >
               {showPassword ? (
@@ -133,7 +150,7 @@ export default function Login() {
           disabled={submitting}
           className="mt-2 inline-flex w-full cursor-pointer items-center justify-center rounded-lg bg-sky-500 px-4 py-2 text-sm font-medium text-white shadow-sm transition hover:bg-sky-400 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:ring-offset-2 focus:ring-offset-slate-900 disabled:pointer-events-none disabled:opacity-60"
         >
-          {submitting ? "Signing in…" : "Login"}
+          {submitting ? "Signing in..." : "Login"}
         </button>
       </form>
     </>

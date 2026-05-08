@@ -1,16 +1,11 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { createPortal } from "react-dom";
 
 export default function Toast({ type, message, onDismiss }) {
-  const [mounted, setMounted] = useState(false);
-
   useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  useEffect(() => {
+    // Toasts auto-dismiss but still allow manual dismissal.
     const id = setTimeout(onDismiss, 5000);
     return () => clearTimeout(id);
   }, [onDismiss]);
@@ -82,9 +77,10 @@ export default function Toast({ type, message, onDismiss }) {
     </div>
   );
 
-  if (!mounted || typeof document === "undefined") {
+  if (typeof document === "undefined") {
     return null;
   }
 
+  // Render above all pages without being constrained by parent layouts.
   return createPortal(node, document.body);
 }
