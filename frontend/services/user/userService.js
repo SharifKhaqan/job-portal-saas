@@ -1,6 +1,8 @@
 import axios from "axios";
 
-const API = "http://localhost:5000/api/user";
+const API = process.env.NEXT_PUBLIC_API_URL 
+  ? `${process.env.NEXT_PUBLIC_API_URL}/user` 
+  : "http://localhost:5000/api/user";
 
 export const updateUserProfile = ({ token, formData }) =>
   axios.put(`${API}/profile`, formData, {

@@ -1,6 +1,8 @@
 import axios from "axios";
 
-const API = "http://localhost:5000/api/admin";
+const API = process.env.NEXT_PUBLIC_API_URL 
+  ? `${process.env.NEXT_PUBLIC_API_URL}/admin` 
+  : "http://localhost:5000/api/admin";
 
 export const getAdminStats = (token) =>
   axios.get(`${API}/stats`, {

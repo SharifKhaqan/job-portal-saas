@@ -1,6 +1,8 @@
 import axios from "axios";
 
-const API = "http://localhost:5000/api/applications";
+const API = process.env.NEXT_PUBLIC_API_URL 
+  ? `${process.env.NEXT_PUBLIC_API_URL}/applications` 
+  : "http://localhost:5000/api/applications";
 
 export const getMyApplications = (token) =>
   axios.get(`${API}/my`, {

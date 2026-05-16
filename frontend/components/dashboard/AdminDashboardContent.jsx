@@ -305,7 +305,10 @@ export default function AdminDashboardContent({
     const getResumeUrl = (resumePath) => {
       if (!resumePath) return "";
       if (/^https?:\/\//i.test(resumePath)) return resumePath;
-      return `http://localhost:5000${resumePath.startsWith("/") ? "" : "/"}${resumePath}`;
+      const baseUrl = process.env.NEXT_PUBLIC_API_URL 
+        ? process.env.NEXT_PUBLIC_API_URL.replace(/\/api$/, '') 
+        : "http://localhost:5000";
+      return `${baseUrl}${resumePath.startsWith("/") ? "" : "/"}${resumePath}`;
     };
 
     return (

@@ -1,6 +1,8 @@
 import axios from "axios";
 
-const API = "http://localhost:5000/api/jobs";
+const API = process.env.NEXT_PUBLIC_API_URL 
+  ? `${process.env.NEXT_PUBLIC_API_URL}/jobs` 
+  : "http://localhost:5000/api/jobs";
 
 export const getAllJobs = (token) =>
   axios.get(API, {
