@@ -1,21 +1,23 @@
-# Job Portal SaaS
+# Job Portal SaaS (Backend)
 
-A full-stack MERN job portal SaaS for candidates, employers, and admins. The platform supports role-based dashboards, job posting, candidate applications, resume uploads, admin management, and smart Ai-Based job recommendations.
+This repository contains the backend code for the full-stack MERN Job Portal SaaS platform. The platform supports role-based dashboards, job posting, candidate applications, resume uploads, admin management, and smart AI-based job recommendations.
+
+> **Note**: The frontend code for this project has been moved to a separate repository.
 
 ## Tech Stack
 
-- Frontend: Next.js App Router, React, Tailwind CSS, Axios
-- Backend: Node.js, Express.js, MongoDB, Mongoose
-- Authentication: JWT and bcrypt
-- Uploads: Multer for resume files
-- Recommendations: Skill matching with optional OpenAI embeddings
+- **Framework**: Node.js, Express.js
+- **Database**: MongoDB, Mongoose
+- **Authentication**: JWT and bcrypt
+- **Uploads**: Multer for resume files
+- **Recommendations**: Skill matching with optional OpenAI embeddings
 
 ## Features
 
-- Candidate registration, login, profile management, resume upload, job browsing, and application tracking
-- Employer dashboard for posting jobs, managing listings, reviewing applications, and accepting or rejecting candidates
-- Admin dashboard for managing users, jobs, applications, and analytics
-- Role-based routing and protected backend endpoints
+- Candidate registration, login, profile management, and resume upload handling
+- Employer endpoints for posting jobs, managing listings, reviewing applications, and accepting or rejecting candidates
+- Admin endpoints for managing users, jobs, applications, and system analytics
+- Role-based routing and protected endpoints
 - Smart job recommendations based on candidate skills/profile and job requirements
 
 ## Project Structure
@@ -28,68 +30,43 @@ backend/
   routes/          Express route definitions
   utils/           Recommendation helpers
   server.js        Express app entry point
-
-frontend/
-  app/             Next.js App Router pages and global styles
-  components/      Auth and dashboard UI components
-  services/        Axios API clients grouped by feature
 ```
 
 ## Getting Started
 
-Clone the repository and install dependencies for both apps.
+Clone the repository and install dependencies.
 
 ```bash
 cd backend
-npm install
-
-cd ../frontend
 npm install
 ```
 
 ## Environment Variables
 
-Create `backend/.env`:
+Create a `.env` file in the `backend` directory:
 
 ```env
+PORT=5000
 MONGO_URI=your_mongodb_connection_string
 JWT_SECRET=your_jwt_secret
 OPENAI_API_KEY=optional_openai_api_key
 OPENAI_EMBEDDING_MODEL=text-embedding-3-small
 ```
 
-`OPENAI_API_KEY` is optional. If it is not provided, the recommendation system uses a local fallback.
+*`OPENAI_API_KEY` is optional. If it is not provided, the recommendation system uses a local fallback.*
 
 ## Run Locally
 
-Start the backend:
+Start the backend server:
 
 ```bash
 cd backend
 npm run dev
 ```
 
-Start the frontend:
-
-```bash
-cd frontend
-npm run dev
-```
-
-Frontend runs on [http://localhost:3000](http://localhost:3000), and the backend runs on [http://localhost:5000](http://localhost:5000).
+The backend runs on [http://localhost:5000](http://localhost:5000) by default.
 
 ## Available Scripts
 
-Backend:
-
-- `npm run dev` starts the backend with nodemon.
-- `npm start` starts the backend with Node.
-
-Frontend:
-
-- `npm run dev` starts the Next.js development server.
-- `npm run build` creates a production build.
-- `npm run start` starts the production server.
-- `npm run lint` runs ESLint.
-
-
+- `npm run dev`: Starts the backend with `nodemon` for development.
+- `npm start`: Starts the backend with Node (for production).
